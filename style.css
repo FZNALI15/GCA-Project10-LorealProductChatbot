@@ -981,3 +981,71 @@ html[dir="rtl"] .chat-window .message-content ul { padding-right: 24px; padding-
 @media (max-width: 550px) {
   .language-control { margin-bottom: 16px; }
 }
+
+/* ===== POLISHED LANGUAGE SELECTOR ===== */
+
+.site-header {
+  position: relative;
+  padding-top: 85px;
+}
+
+.language-switcher {
+  position: absolute;
+  top: 22px;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.language-switcher label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #555;
+}
+
+.language-switcher label i {
+  color: #e3a535;
+}
+
+.language-switcher select {
+  padding: 5px 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background: #fafafa;
+  color: #222;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.language-switcher select:focus-visible {
+  outline: 2px solid #e3a535;
+  outline-offset: 2px;
+}
+
+/* RTL positioning */
+
+html[dir="rtl"] .language-switcher {
+  right: auto;
+  left: 0;
+}
+
+/* Mobile */
+
+@media (max-width: 550px) {
+  .site-header {
+    padding-top: 95px;
+  }
+
+  .language-switcher {
+    top: 18px;
+    right: 0;
+  }
+}

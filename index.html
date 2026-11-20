@@ -11,9 +11,13 @@
 <body>
   <div class="page-wrapper">
     <header class="site-header">
-      <div class="language-control">
-        <label for="languageSelect" data-i18n="languageLabel">Language</label>
-        <select id="languageSelect" aria-label="Language / اللغة">
+      <div class="language-switcher">
+        <label for="languageSelect">
+          <i class="fa-solid fa-globe"></i>
+          <span data-i18n="languageLabel">Language</span>
+        </label>
+
+        <select id="languageSelect" aria-label="Select language">
           <option value="en">English</option>
           <option value="ar">العربية</option>
         </select>
