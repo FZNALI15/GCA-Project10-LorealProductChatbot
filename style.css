@@ -1,6 +1,6 @@
 /* ==========================================
    L'ORÉAL SMART ROUTINE & PRODUCT ADVISOR
-   Project 9 - Global Career Accelerator
+   Project 10 - Global Career Accelerator
    ========================================== */
 
 /* ===== GLOBAL RESET ===== */
@@ -926,3 +926,58 @@ button {
   font-weight: 700;
   line-height: 1.5;
   margin-top: 18px;
+
+/* ===== LANGUAGE SWITCHER & RTL SUPPORT ===== */
+.language-control {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-bottom: 22px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.language-control select {
+  padding: 9px 12px;
+  border: 1px solid #ddd;
+  border-radius: 7px;
+  background: #fff;
+  color: #222;
+  font-size: 13px;
+  cursor: pointer;
+}
+.language-control select:focus-visible {
+  outline: 2px solid #e3a535;
+  outline-offset: 2px;
+}
+html[dir="rtl"] body {
+  font-family: "Noto Sans Arabic", "Montserrat", Arial, sans-serif;
+}
+html[dir="rtl"] .language-control { justify-content: flex-start; }
+html[dir="rtl"] .product-select { text-align: right; }
+html[dir="rtl"] .selection-indicator { right: auto; left: 10px; }
+html[dir="rtl"] .new-chat-btn i { margin: 0; }
+html[dir="rtl"] .chat-window .assistant-message {
+  border-left: 1px solid #e5e5e5 !important;
+  border-right: 3px solid #e3a535 !important;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 3px;
+}
+html[dir="rtl"] .chat-window .user-message {
+  border-bottom-right-radius: 12px;
+  border-bottom-left-radius: 3px;
+}
+html[dir="rtl"] .chat-form button i { transform: scaleX(-1); }
+.message-content[dir="rtl"] { text-align: right; }
+.message-content[dir="ltr"] { text-align: left; }
+.message-content ol, .message-content ul {
+  padding-inline-start: 24px;
+  padding-left: 0;
+}
+html[dir="ltr"] .message-content ol,
+html[dir="ltr"] .message-content ul { padding-left: 24px; }
+html[dir="rtl"] .chat-window .message-content ol,
+html[dir="rtl"] .chat-window .message-content ul { padding-right: 24px; padding-left: 0; }
+@media (max-width: 550px) {
+  .language-control { margin-bottom: 16px; }
+}
