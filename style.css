@@ -890,3 +890,39 @@ button {
     padding: 12px !important;
   }
 }
+
+/* ===== IMPROVED AI ROUTINE FORMATTING ===== */
+
+.chat-window .message-content ol {
+  list-style-type: decimal;
+  padding-left: 24px;
+  margin: 12px 0;
+}
+
+.chat-window .message-content ul {
+  list-style-type: disc;
+  padding-left: 22px;
+  margin: 8px 0;
+}
+
+.chat-window .message-content ol > li {
+  margin-bottom: 14px;
+  padding-left: 4px;
+}
+
+.chat-window .message-content ol > li > ul {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.chat-window .message-content ul > li {
+  margin-bottom: 5px;
+}
+
+.chat-window .message-content h3,
+.chat-window .message-content h4,
+.chat-window .message-content h5,
+.chat-window .message-content h6 {
+  font-weight: 700;
+  line-height: 1.5;
+  margin-top: 18px;

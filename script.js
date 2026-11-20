@@ -43,41 +43,59 @@ function escapeHTML(value) {
   }[char]));
 }
 
-// Simple safe Markdown formatter for AI messages
+
+/* ==========================================
+   AI MESSAGE MARKDOWN FORMATTING
+   ========================================== */
+
 function formatMessage(text) {
   const escaped = escapeHTML(text);
-
   const lines = escaped.split("\n");
+
   const output = [];
   let listType = null;
+  let listItemOpen = false;
+  let listCounter = 0;
 
-  function closeList() {
-    if (listType) {
-      output.push(`</${listType}>`);
-      listType = null;
+  function formatInline(value) {
+    return value
+      .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+      .replace(/`([^`]+)`/g, "<code>$1</code>")
+      .replace(/\*([^*]+)\*/g, "<em>$1</em>");
+  }
+
+  function closeListItem() {
+    if (listItemOpen) {
+      output.push("</li>");
+      listItemOpen = false;
     }
   }
 
-  function formatInline(line) {
-    return line
-      .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
-      .replace(/`([^`]+)`/g, "<code>$1</code>");
+  function closeList() {
+    closeListItem();
+
+    if (listType) {
+      output.push(`</${listType}>`);
+      listType = null;
+      listCounter = 0;
+    }
   }
 
   for (const line of lines) {
     const trimmed = line.trim();
 
+    // Blank lines
     if (!trimmed) {
-      closeList();
       continue;
     }
 
-    const heading = trimmed.match(/^(#{1,3})\s+(.+)$/);
+    // Markdown headings
+    const heading = trimmed.match(/^(#{1,6})\s+(.+)$/);
 
     if (heading) {
       closeList();
 
-      const level = Math.min(heading[1].length + 2, 5);
+      const level = Math.min(heading[1].length + 1, 6);
 
       output.push(
         `<h${level}>${formatInline(heading[2])}</h${level}>`
@@ -86,25 +104,63 @@ function formatMessage(text) {
       continue;
     }
 
-    const ordered = trimmed.match(/^\d+\.\s+(.+)$/);
-    const unordered = trimmed.match(/^[-*]\s+(.+)$/);
+    // Numbered lists: 1. Item or 1) Item
+    const ordered = trimmed.match(/^\d+[.)]\s+(.+)$/);
 
-    if (ordered || unordered) {
-      const type = ordered ? "ol" : "ul";
-      const content = ordered ? ordered[1] : unordered[1];
-
-      if (listType !== type) {
+    if (ordered) {
+      if (listType !== "ol") {
         closeList();
-        output.push(`<${type}>`);
-        listType = type;
+        output.push("<ol>");
+        listType = "ol";
+        listCounter = 0;
       }
 
-      output.push(`<li>${formatInline(content)}</li>`);
+      closeListItem();
+
+      listCounter++;
+
+      output.push(
+        `<li value="${listCounter}">${formatInline(ordered[1])}`
+      );
+
+      listItemOpen = true;
       continue;
     }
 
+    // Bullet lists
+    const unordered = trimmed.match(/^[-*]\s+(.+)$/);
+
+    if (unordered) {
+      if (listType === "ol" && listItemOpen) {
+        // Attach bullet points to the current numbered step
+        output.push(
+          `<ul><li>${formatInline(unordered[1])}</li></ul>`
+        );
+      } else {
+        if (listType !== "ul") {
+          closeList();
+          output.push("<ul>");
+          listType = "ul";
+        }
+
+        closeListItem();
+
+        output.push(
+          `<li>${formatInline(unordered[1])}`
+        );
+
+        listItemOpen = true;
+      }
+
+      continue;
+    }
+
+    // Normal paragraphs
     closeList();
-    output.push(`<p>${formatInline(trimmed)}</p>`);
+
+    output.push(
+      `<p>${formatInline(trimmed)}</p>`
+    );
   }
 
   closeList();
